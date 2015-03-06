@@ -1,11 +1,14 @@
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 
 ul {
 	list-style-type: none;
   margin-left: 0;
   padding-left: 0;
+}
+h3 {
+  font-size: 22px;
 }
 
 .possible_answer  {
@@ -35,28 +38,30 @@ ul {
 }
 
 .wrong-answer {
-  background:   #F7A08B;
+  background:   #EF4123;
+  color: white;
   border: 1px solid transparent;
 }
 
 .correct-answer {
-    background: #ABD69B;
+    background: #1CAB49;
+    color: white;
     border: 1px solid transparent;
 }
 
 .correct-answer:before {
-  /* content: "CHECK"; */
+  content: "✓";
 }
 
 
 
 .how_you_did {
 	text-align: center;
-	padding: 1em;
+	padding: 2em;
 	/*background-color: rgb(254, 231, 88);*/
-  background-color: #FFEEBC;
+  background-color: #FFD769;
 	font-weight: bold;
-	font-size: 1.25em;
+	font-size: 1.5em;
   /*
 	-webkit-box-shadow: 0px 7px 5px rgba(50, 50, 50, 0.65);
 	-moz-box-shadow:    0px 7px 5px rgba(50, 50, 50, 0.65);
