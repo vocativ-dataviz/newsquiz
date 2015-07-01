@@ -22,6 +22,7 @@
         var cheater_answer_tracking = [];
         var answer_tracking = [];
         var how_you_did_element;
+        var totalScore;
 
         var quiz = {
             defaulting_behavior_on : true,
@@ -177,7 +178,6 @@
 
             init : function(quiz_data, results_data, options) {
                 self = this;
-
                 if (options) {
                     for ( var option in options ) {
                         self[option] = options[option];
@@ -195,12 +195,12 @@
 
                     self.init_data(quiz_data, results_data);
                 }
-
                 return self;
             },
             init_data: function(quiz_data, results_data) {
                 self.quiz_data = quiz_data;
                 self.results_data = results_data;
+                self.totalScore = self.quiz_data.length;
 
                 self.calculate_aspectratios(quiz_data);
                 self.create_cover();
@@ -216,8 +216,8 @@
                 cover.append(how_you_did_element);
             },
             append_tweet: function() {
-                console.log("it was called");
-                var tweetMessage = "Wow. That was a cool Quiz! I got a score of: " +self.calculate_score();
+                var tweetMessage = "Wow. That was a cool Quiz! I gots me score of: " +self.calculate_score()+
+                                    "/" + self.totalScore;
                 var tweet = $('<a>Tweet</a>');
                 tweet
                     .attr('href','https://twitter.com/share')
