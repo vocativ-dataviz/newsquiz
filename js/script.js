@@ -226,7 +226,10 @@
                     .attr('data-via','vocativ')
                     .attr('data-size', 'large')
                     .attr('data-count', 'none');
-                how_you_did_element.append(tweet);
+                var social = $('<ul class="social"><li>Share Your Results: </li></ul>');
+                var tweetItem = $('<li></li>').append(tweet);
+                social.append(tweetItem);
+                how_you_did_element.append(social);
                 self.twitterPluginCode();
                 twttr.widgets.load();
             },

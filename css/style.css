@@ -53,6 +53,19 @@ h3 {
   content: "✓";
 }
 
+.social {
+  list-style-type: none;
+}
+
+.social >li {
+
+  display:inline;
+}
+
+.social >li >iframe{
+  vertical-align:middle;
+}
+
 
 
 .how_you_did {
