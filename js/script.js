@@ -3,8 +3,8 @@
 
     function score (nCorrect, nQuestions) {
         var answersWord = nCorrect === 1 ? 'answer' : 'answers';
-        return 'You got <span class="correct-answers">' + nCorrect + '</span> ' +
-               'correct ' + answersWord + ' out of ' + nQuestions + ' questions';
+        return '<div>You got <span class="correct-answers">' + nCorrect + '</span> ' +
+               'correct ' + answersWord + ' out of ' + nQuestions + ' questions</div>';
     }
 
     function scores(nQuestions) {
@@ -204,20 +204,19 @@
 
                 self.calculate_aspectratios(quiz_data);
                 self.create_cover();
-
                 for ( var i = 0; i < self.quiz_data.length; i++ ) {
                     self.append_question(i);
                 }
 
                 self.append_how_you_did_section();
                 self.update_how_you_did_element();
-                self.append_tweet(quiz_data);
             },
             append_how_you_did_section: function() {
-                how_you_did_element = $('<p class="how_you_did"></p>');
+                how_you_did_element = $('<div class="how_you_did"></div>');
                 cover.append(how_you_did_element);
             },
-            append_tweet: function(quiz_data) {
+            append_tweet: function() {
+                console.log("it was called");
                 var tweetMessage = "Wow. That was a cool Quiz! I got a score of: " +self.calculate_score();
                 var tweet = $('<a>Tweet</a>');
                 tweet
@@ -227,8 +226,9 @@
                     .attr('data-via','vocativ')
                     .attr('data-size', 'large')
                     .attr('data-count', 'none');
+                how_you_did_element.append(tweet);
                 self.twitterPluginCode();
-                cover.append(tweet);
+                twttr.widgets.load();
             },
 
             twitterPluginCode: function(){
@@ -427,7 +427,9 @@
                     question_index + '"></ul>');
 
                 function bindClick(question_index, answer_index, possible_answer) {
+
                     possible_answer.bind('click', function() {
+
                         // was it the right answer?
                         var was_correct = self.quiz_data[question_index].possible_answers[answer_index].correct;
 
@@ -457,6 +459,7 @@
                         
                         // track that this was selected last
                         self.quiz_data[question_index].previously_selected = self.quiz_data[question_index].possible_answers[answer_index];
+                        
                     });
                 }
 
@@ -526,15 +529,14 @@
                         right_answers++;
                     }
                 }
-                //alert(right_answers);
                 var html;
-                //Problem: Unfinished variable is in other function
                 if (unfinished && typeof(this.not_finished_html) !== 'undefined') {
                     html = this.not_finished_html;
                 } else {
                     html = this.results_data[right_answers];
                 }
                 how_you_did_element.html(html);
+                self.append_tweet();
             },
             calculate_score: function(){
                 var right_answers = 0;
