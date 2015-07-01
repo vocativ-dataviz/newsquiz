@@ -177,6 +177,7 @@
             ],
 
             init : function(quiz_data, results_data, options) {
+
                 self = this;
                 if (options) {
                     for ( var option in options ) {
@@ -215,10 +216,12 @@
                 how_you_did_element = $('<div class="how_you_did"></div>');
                 cover.append(how_you_did_element);
             },
-            append_tweet: function() {
+            append_social: function() {
                 var tweetMessage = "Wow. That was a cool Quiz! I gots me score of: " +self.calculate_score()+
                                     "/" + self.totalScore;
                 var tweet = $('<a>Tweet</a>');
+                var fbook = $('<div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>');
+                
                 tweet
                     .attr('href','https://twitter.com/share')
                     .attr('class',"twitter-share-button")
@@ -228,14 +231,29 @@
                     .attr('data-count', 'none');
                 var social = $('<ul class="social"><li>Share Your Results: </li></ul>');
                 var tweetItem = $('<li></li>').append(tweet);
+                var fbookItem = $('<li></li>').append(fbook);
                 social.append(tweetItem);
+                social.append(fbookItem);
                 how_you_did_element.append(social);
                 self.twitterPluginCode();
+                self.facebookPluginCode();
                 twttr.widgets.load();
             },
 
             twitterPluginCode: function(){
+
                !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs'); 
+            },
+
+            facebookPluginCode: function(){
+
+                (function(d, s, id) {
+                          var js, fjs = d.getElementsByTagName(s)[0];
+                          if (d.getElementById(id)) return;
+                          js = d.createElement(s); js.id = id;
+                          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+                          fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));
             },
 
             load_from_google_spreadsheet: function(spreadsheet_id) {
@@ -539,7 +557,7 @@
                     html = this.results_data[right_answers];
                 }
                 how_you_did_element.html(html);
-                self.append_tweet();
+                self.append_social();
             },
             calculate_score: function(){
                 var right_answers = 0;
