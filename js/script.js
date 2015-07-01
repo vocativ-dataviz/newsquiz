@@ -23,6 +23,7 @@
         var answer_tracking = [];
         var how_you_did_element;
         var totalScore;
+        var social;
 
         var quiz = {
             defaulting_behavior_on : true,
@@ -220,17 +221,16 @@
                 var tweetMessage = "Wow. That was a cool Quiz! I gots me score of: " +self.calculate_score()+
                                     "/" + self.totalScore;
                 var tweet = $('<a>Tweet</a>');
-                var fbook = $('<div class="fb-share-button" data-href="https://developers.facebook.com/docs/plugins/" data-layout="button"></div>');
+                var fbook = $('<div class="fb-share-button" data-href="https://google.com/?[summary]=Hello" data-layout="button"></div>');
                 
                 tweet
                     .attr('href','https://twitter.com/share')
                     .attr('class',"twitter-share-button")
                     .attr('data-text', tweetMessage)
                     .attr('data-via','vocativ')
-                    .attr('data-size', 'large')
                     .attr('data-count', 'none');
-                var social = $('<ul class="social"><li>Share Your Results: </li></ul>');
-                var tweetItem = $('<li></li>').append(tweet);
+                social = $('<ul class="social"><li>Share Your Results: </li></ul>');
+                var tweetItem = $('<li class="twitter"></li>').append(tweet);
                 var fbookItem = $('<li></li>').append(fbook);
                 social.append(tweetItem);
                 social.append(fbookItem);
@@ -238,6 +238,7 @@
                 self.twitterPluginCode();
                 self.facebookPluginCode();
                 twttr.widgets.load();
+                FB.XFBML.parse();
             },
 
             twitterPluginCode: function(){
@@ -246,12 +247,11 @@
             },
 
             facebookPluginCode: function(){
-
                 (function(d, s, id) {
                           var js, fjs = d.getElementsByTagName(s)[0];
                           if (d.getElementById(id)) return;
                           js = d.createElement(s); js.id = id;
-                          js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+                          js.async=true; js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
                           fjs.parentNode.insertBefore(js, fjs);
                         }(document, 'script', 'facebook-jssdk'));
             },
