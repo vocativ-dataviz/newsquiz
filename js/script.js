@@ -211,10 +211,28 @@
 
                 self.append_how_you_did_section();
                 self.update_how_you_did_element();
+                self.append_tweet(quiz_data);
             },
             append_how_you_did_section: function() {
                 how_you_did_element = $('<p class="how_you_did"></p>');
                 cover.append(how_you_did_element);
+            },
+            append_tweet: function(quiz_data) {
+                var tweetMessage = "Wow. That was a cool Quiz! I got a score of: " +self.calculate_score();
+                var tweet = $('<a>Tweet</a>');
+                tweet
+                    .attr('href','https://twitter.com/share')
+                    .attr('class',"twitter-share-button")
+                    .attr('data-text', tweetMessage)
+                    .attr('data-via','vocativ')
+                    .attr('data-size', 'large');
+                    .attr('data-count', 'none');
+                self.twitterPluginCode();
+                cover.append(tweet);
+            },
+
+            twitterPluginCode: function(){
+               !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs'); 
             },
 
             load_from_google_spreadsheet: function(spreadsheet_id) {
@@ -496,6 +514,7 @@
                 container_elem.css('padding', '0px');
             },
             update_how_you_did_element: function() {
+                //var right_answers = self.calculate_score();
                 var right_answers = 0;
                 var user_answers = self.cheating ? cheater_answer_tracking : answer_tracking;
                 var unfinished = false;
@@ -507,13 +526,25 @@
                         right_answers++;
                     }
                 }
+                //alert(right_answers);
                 var html;
+                //Problem: Unfinished variable is in other function
                 if (unfinished && typeof(this.not_finished_html) !== 'undefined') {
                     html = this.not_finished_html;
                 } else {
                     html = this.results_data[right_answers];
                 }
                 how_you_did_element.html(html);
+            },
+            calculate_score: function(){
+                var right_answers = 0;
+                var user_answers = self.cheating ? cheater_answer_tracking : answer_tracking;
+                for (var i = 0; i < self.quiz_data.length; i++) {
+                    if (user_answers[i]) {
+                        right_answers++;
+                    }
+                }
+                return right_answers;
             }
         };
         return quiz.init(quiz_data, results_data, options);
