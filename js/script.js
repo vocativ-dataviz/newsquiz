@@ -225,7 +225,7 @@
                     .attr('class',"twitter-share-button")
                     .attr('data-text', tweetMessage)
                     .attr('data-via','vocativ')
-                    .attr('data-size', 'large');
+                    .attr('data-size', 'large')
                     .attr('data-count', 'none');
                 self.twitterPluginCode();
                 cover.append(tweet);
