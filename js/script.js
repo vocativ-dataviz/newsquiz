@@ -23,7 +23,11 @@
         var answer_tracking = [];
         var how_you_did_element;
         var totalScore;
-        var social;
+        //FOR EJ TO CHANGE
+        var url = 'http://www.google.com';
+        var twtrPreCopy = 'I love this quiz! I scored a: '
+        var twtrPostCopy = '. You can try your luck at ';
+
 
         var quiz = {
             defaulting_behavior_on : true,
@@ -218,10 +222,10 @@
                 cover.append(how_you_did_element);
             },
             append_social: function() {
-                var tweetMessage = "Wow. That was a cool Quiz! I gots me score of: " +self.calculate_score()+
-                                    "/" + self.totalScore;
+                var tweetMessage = twtrPreCopy +self.calculate_score()+
+                                    "/" + self.totalScore +twtrPostCopy;
                 var tweet = $('<a>Tweet</a>');
-                var fbook = $('<div class="fb-share-button" data-href="https://google.com/?[summary]=Hello" data-layout="button"></div>');
+                var fbook = $('<div class="fb-share-button" data-href="'+url+'" data-layout="button"></div>');
                 
                 tweet
                     .attr('href','https://twitter.com/share')
@@ -229,7 +233,7 @@
                     .attr('data-text', tweetMessage)
                     .attr('data-via','vocativ')
                     .attr('data-count', 'none');
-                social = $('<ul class="social"><li>Share Your Results: </li></ul>');
+                var social = $('<ul class="social"><li>Share Your Results: </li></ul>');
                 var tweetItem = $('<li class="twitter"></li>').append(tweet);
                 var fbookItem = $('<li></li>').append(fbook);
                 social.append(tweetItem);
