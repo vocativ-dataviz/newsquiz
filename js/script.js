@@ -3,8 +3,8 @@
 
     function score (nCorrect, nQuestions) {
         var answersWord = nCorrect === 1 ? 'answer' : 'answers';
-        return 'You got <span class="correct-answers">' + nCorrect + '</span> ' +
-               'correct ' + answersWord + ' out of ' + nQuestions + ' questions';
+        return '<div>You got <span class="correct-answers">' + nCorrect + '</span> ' +
+               'correct ' + answersWord + ' out of ' + nQuestions + ' questions</div>';
     }
 
     function scores(nQuestions) {
@@ -22,6 +22,13 @@
         var cheater_answer_tracking = [];
         var answer_tracking = [];
         var how_you_did_element;
+        var totalScore;
+        
+        //FOR EJ TO CHANGE
+        var url = 'http://www.google.com';
+        var twtrPreCopy = 'I love this quiz! I scored a: '
+        var twtrPostCopy = '. You can try your luck at ';
+
 
         var quiz = {
             defaulting_behavior_on : true,
@@ -176,8 +183,8 @@
             ],
 
             init : function(quiz_data, results_data, options) {
-                self = this;
 
+                self = this;
                 if (options) {
                     for ( var option in options ) {
                         self[option] = options[option];
@@ -195,16 +202,15 @@
 
                     self.init_data(quiz_data, results_data);
                 }
-
                 return self;
             },
             init_data: function(quiz_data, results_data) {
                 self.quiz_data = quiz_data;
                 self.results_data = results_data;
+                self.totalScore = self.quiz_data.length;
 
                 self.calculate_aspectratios(quiz_data);
                 self.create_cover();
-
                 for ( var i = 0; i < self.quiz_data.length; i++ ) {
                     self.append_question(i);
                 }
@@ -213,8 +219,46 @@
                 self.update_how_you_did_element();
             },
             append_how_you_did_section: function() {
-                how_you_did_element = $('<p class="how_you_did"></p>');
+                how_you_did_element = $('<div class="how_you_did"></div>');
                 cover.append(how_you_did_element);
+            },
+            append_social: function() {
+                var tweetMessage = twtrPreCopy +self.calculate_score()+
+                                    "/" + self.totalScore +twtrPostCopy;
+                var tweet = $('<a>Tweet</a>');
+                var fbook = $('<div class="fb-share-button" data-href="'+url+'" data-layout="button"></div>');
+                
+                tweet
+                    .attr('href','https://twitter.com/share')
+                    .attr('class',"twitter-share-button")
+                    .attr('data-text', tweetMessage)
+                    .attr('data-via','vocativ')
+                    .attr('data-count', 'none');
+                var social = $('<ul class="social"><li>Share Your Results: </li></ul>');
+                var tweetItem = $('<li class="twitter"></li>').append(tweet);
+                //var fbookItem = $('<li></li>').append(fbook);
+                social.append(tweetItem);
+                //social.append(fbookItem);
+                how_you_did_element.append(social);
+                self.twitterPluginCode();
+                //self.facebookPluginCode();
+                twttr.widgets.load();
+                //FB.XFBML.parse();
+            },
+
+            twitterPluginCode: function(){
+
+               !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs'); 
+            },
+
+            facebookPluginCode: function(){
+                (function(d, s, id) {
+                          var js, fjs = d.getElementsByTagName(s)[0];
+                          if (d.getElementById(id)) return;
+                          js = d.createElement(s); js.id = id;
+                          js.async=true; js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.3";
+                          fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));
             },
 
             load_from_google_spreadsheet: function(spreadsheet_id) {
@@ -409,7 +453,9 @@
                     question_index + '"></ul>');
 
                 function bindClick(question_index, answer_index, possible_answer) {
+
                     possible_answer.bind('click', function() {
+
                         // was it the right answer?
                         var was_correct = self.quiz_data[question_index].possible_answers[answer_index].correct;
 
@@ -439,6 +485,7 @@
                         
                         // track that this was selected last
                         self.quiz_data[question_index].previously_selected = self.quiz_data[question_index].possible_answers[answer_index];
+                        
                     });
                 }
 
@@ -496,6 +543,7 @@
                 container_elem.css('padding', '0px');
             },
             update_how_you_did_element: function() {
+                //var right_answers = self.calculate_score();
                 var right_answers = 0;
                 var user_answers = self.cheating ? cheater_answer_tracking : answer_tracking;
                 var unfinished = false;
@@ -514,6 +562,17 @@
                     html = this.results_data[right_answers];
                 }
                 how_you_did_element.html(html);
+                self.append_social();
+            },
+            calculate_score: function(){
+                var right_answers = 0;
+                var user_answers = self.cheating ? cheater_answer_tracking : answer_tracking;
+                for (var i = 0; i < self.quiz_data.length; i++) {
+                    if (user_answers[i]) {
+                        right_answers++;
+                    }
+                }
+                return right_answers;
             }
         };
         return quiz.init(quiz_data, results_data, options);
