@@ -23,6 +23,7 @@
         var answer_tracking = [];
         var how_you_did_element;
         var totalScore;
+        
         //FOR EJ TO CHANGE
         var url = 'http://www.google.com';
         var twtrPreCopy = 'I love this quiz! I scored a: '
@@ -235,14 +236,14 @@
                     .attr('data-count', 'none');
                 var social = $('<ul class="social"><li>Share Your Results: </li></ul>');
                 var tweetItem = $('<li class="twitter"></li>').append(tweet);
-                var fbookItem = $('<li></li>').append(fbook);
+                //var fbookItem = $('<li></li>').append(fbook);
                 social.append(tweetItem);
-                social.append(fbookItem);
+                //social.append(fbookItem);
                 how_you_did_element.append(social);
                 self.twitterPluginCode();
-                self.facebookPluginCode();
+                //self.facebookPluginCode();
                 twttr.widgets.load();
-                FB.XFBML.parse();
+                //FB.XFBML.parse();
             },
 
             twitterPluginCode: function(){
