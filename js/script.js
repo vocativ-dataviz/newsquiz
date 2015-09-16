@@ -233,7 +233,9 @@
                     .attr('class',"twitter-share-button")
                     .attr('data-text', tweetMessage)
                     .attr('data-via','vocativ')
+                    .attr('data-url', url)
                     .attr('data-count', 'none');
+
                 var social = $('<ul class="social"><li>Share Your Results: </li></ul>');
                 var tweetItem = $('<li class="twitter"></li>').append(tweet);
                 //var fbookItem = $('<li></li>').append(fbook);
